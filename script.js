@@ -1,11 +1,17 @@
+// =====================
+// 1. Variablen
+// =====================
 let balance = 0;
-let transactions = []; // Array für alle Einträge
+let transactions = [];
 
 const balanceText = document.getElementById("balance");
 const textInput = document.getElementById("textInput");
 const amountInput = document.getElementById("amountInput");
 const list = document.getElementById("list");
 
+// =====================
+// 2. EventListener
+// =====================
 document.getElementById("addIncome").addEventListener("click", function () {
     addTransaction(true);
 });
@@ -13,6 +19,10 @@ document.getElementById("addIncome").addEventListener("click", function () {
 document.getElementById("addExpense").addEventListener("click", function () {
     addTransaction(false);
 });
+
+// =====================
+// 3. Funktionen
+// =====================
 
 function addTransaction(isIncome) {
     const text = textInput.value;
@@ -28,15 +38,17 @@ function addTransaction(isIncome) {
         amount: isIncome ? amount : -amount
     };
 
-    transactions.push(transaction);      // in Array speichern
-    saveTransactions();                  // in LocalStorage speichern
-    renderTransactions();                // in Liste anzeigen
-    updateBalance();                     // Kontostand aktualisieren
+    transactions.push(transaction);
+    saveTransactions();
+    renderTransactions();
+    updateBalance();
 
     textInput.value = "";
     amountInput.value = "";
 }
-// Funktion zum Speichern
+// ===========================
+// 4. Funktionen zum Speichern
+// ===========================
 function saveTransactions() {
     localStorage.setItem("transactions", JSON.stringify(transactions));
 }
@@ -49,7 +61,9 @@ function loadTransactions() {
         renderTransactions();
     }
 }
-// Render-Funktion
+// =====================
+// 5. Render-Funktionen
+// =====================
 function renderTransactions() {
     list.innerHTML = ""; // alles löschen
 
@@ -60,7 +74,9 @@ function renderTransactions() {
         list.appendChild(li);
     });
 }
+// =====================
 // Update Balance
+// =====================
 function updateBalance() {
     balance = transactions.reduce((acc, tr) => acc + tr.amount, 0);
     balanceText.textContent = "Kontostand: " + balance + " €";
