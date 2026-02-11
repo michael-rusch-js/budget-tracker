@@ -1,41 +1,165 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background: #f4f4f4;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
+/* Card */
 .app {
-    max-width: 400px;
-    margin: 40px auto;
     background: white;
-    padding: 20px;
-    border-radius: 10px;
+    width: 380px;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
 }
 
+/* Titel */
+h2 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* Balance */
+#balance {
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+/* Inputs */
 input {
     width: 100%;
-    padding: 8px;
+    padding: 10px;
     margin-bottom: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 14px;
 }
 
+/* Button Container */
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+/* Buttons */
 button {
-    width: 48%;
-    padding: 8px;
-    margin-bottom: 10px;
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s ease;
+}
+#toggleChart {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    margin-bottom: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
+/* Hover Effekt */
+#toggleChart:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    background: linear-gradient(135deg, #764ba2, #667eea);
+}
+
+/* Dark Mode Anpassung */
+body.dark #toggleChart {
+    background: linear-gradient(135deg, #444, #222);
+    color: #fff;
+}
+
+body.dark #toggleChart:hover {
+    background: linear-gradient(135deg, #555, #333);
+}
+/* Income */
 #addIncome {
-    background: green;
+    background: #4CAF50;
     color: white;
 }
 
+#addIncome:hover {
+    background: #45a049;
+}
+
+/* Expense */
 #addExpense {
-    background: red;
+    background: #f44336;
     color: white;
+}
+
+#addExpense:hover {
+    background: #e53935;
+}
+
+/* List */
+ul {
+    list-style: none;
+    margin-top: 15px;
 }
 
 li {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 5px;
+    align-items: center;
+    background: #f7f7f7;
+    padding: 8px 10px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+/* Delete Button */
+li button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+/* Toggle Button */
+#themeToggle {
+    margin-bottom: 15px;
+    width: 100%;
+    background: #222;
+    color: white;
+}
+
+/* Dark Mode */
+body.dark {
+    background: linear-gradient(135deg, #1e1e1e, #121212);
+}
+
+body.dark .app {
+    background: #1f1f1f;
+    color: white;
+}
+
+body.dark input {
+    background: #2c2c2c;
+    color: white;
+    border: 1px solid #444;
+}
+
+body.dark li {
+    background: #2c2c2c;
 }
