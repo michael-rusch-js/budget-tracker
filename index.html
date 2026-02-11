@@ -9,18 +9,25 @@
 
 <div class="app">
     <h2>Budget Tracker 💰</h2>
-
+    <button id="themeToggle">🌙 Dark Mode</button> 
     <h3 id="balance">Kontostand: 0 €</h3>
+<button id="toggleChart">📊 Show Chart</button>
 
+<div id="chartContainer" style="display: none; margin-top:20px;">
+    <canvas id="budgetChart"></canvas>
+</div>
     <input type="text" id="textInput" placeholder="Beschreibung">
     <input type="number" id="amountInput" placeholder="Betrag">
 
+    <div class="buttons">
     <button id="addIncome">+ Einnahme</button>
     <button id="addExpense">- Ausgabe</button>
+</div>
 
     <ul id="list"></ul>
 </div>
 
 <script src="script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
