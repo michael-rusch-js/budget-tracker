@@ -159,6 +159,45 @@ body.dark input {
     color: white;
     border: 1px solid #444;
 }
+/* Alles kleiner machen für Mobile */
+@media (max-width: 480px) {
+    .app {
+        width: 90%;
+        padding: 15px;
+    }
+
+    input, #toggleChart, .buttons button {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    li {
+        font-size: 14px;
+        padding: 6px 8px;
+    }
+
+    #balance {
+        font-size: 18px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+}
+#chartContainer canvas {
+    width: 100% !important;
+    max-width: 350px; /* max Breite auf Handy */
+}
+.buttons {
+    flex-direction: column;
+    gap: 10px;
+}
+
+@media(min-width: 481px) {
+    .buttons {
+        flex-direction: row;
+    }
+}
 
 body.dark li {
     background: #2c2c2c;
