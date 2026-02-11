@@ -1,4 +1,5 @@
 let balance = 0;
+let transactions = []; // Array für alle Einträge
 
 const balanceText = document.getElementById("balance");
 const textInput = document.getElementById("textInput");
@@ -22,18 +23,47 @@ function addTransaction(isIncome) {
         return;
     }
 
-    if (isIncome) {
-        balance += amount;
-    } else {
-        balance -= amount;
-    }
+    const transaction = {
+        text: text,
+        amount: isIncome ? amount : -amount
+    };
 
-    balanceText.textContent = "Kontostand: " + balance + " €";
-
-    const li = document.createElement("li");
-    li.textContent = text + " : " + (isIncome ? "+" : "-") + amount + " €";
-    list.appendChild(li);
+    transactions.push(transaction);      // in Array speichern
+    saveTransactions();                  // in LocalStorage speichern
+    renderTransactions();                // in Liste anzeigen
+    updateBalance();                     // Kontostand aktualisieren
 
     textInput.value = "";
     amountInput.value = "";
 }
+// Funktion zum Speichern
+function saveTransactions() {
+    localStorage.setItem("transactions", JSON.stringify(transactions));
+}
+
+function loadTransactions() {
+    const saved = localStorage.getItem("transactions");
+    if (saved) {
+        transactions = JSON.parse(saved);
+        updateBalance();
+        renderTransactions();
+    }
+}
+// Render-Funktion
+function renderTransactions() {
+    list.innerHTML = ""; // alles löschen
+
+    transactions.forEach(tr => {
+        const li = document.createElement("li");
+        li.textContent = tr.text + " : " + (tr.amount >= 0 ? "+" : "") + tr.amount + " €";
+        li.style.color = tr.amount >= 0 ? "green" : "red";
+        list.appendChild(li);
+    });
+}
+// Update Balance
+function updateBalance() {
+    balance = transactions.reduce((acc, tr) => acc + tr.amount, 0);
+    balanceText.textContent = "Kontostand: " + balance + " €";
+}
+
+loadTransactions();
