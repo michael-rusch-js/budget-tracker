@@ -19,7 +19,11 @@ document.getElementById("addIncome").addEventListener("click", function () {
 document.getElementById("addExpense").addEventListener("click", function () {
     addTransaction(false);
 });
-
+amountInput.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        addTransaction(true); // Standard = Einnahme
+    }
+});
 // =====================
 // 3. Funktionen
 // =====================
@@ -65,12 +69,29 @@ function loadTransactions() {
 // 5. Render-Funktionen
 // =====================
 function renderTransactions() {
-    list.innerHTML = ""; // alles löschen
+    list.innerHTML = "";
 
-    transactions.forEach(tr => {
+    transactions.forEach((tr, index) => {
         const li = document.createElement("li");
-        li.textContent = tr.text + " : " + (tr.amount >= 0 ? "+" : "") + tr.amount + " €";
-        li.style.color = tr.amount >= 0 ? "green" : "red";
+
+        const span = document.createElement("span");
+        span.textContent = tr.text + " : " + (tr.amount >= 0 ? "+" : "") + tr.amount + " €";
+        span.style.color = tr.amount >= 0 ? "green" : "red";
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "❌";
+        deleteBtn.style.marginLeft = "10px";
+
+        deleteBtn.addEventListener("click", function () {
+            transactions.splice(index, 1);
+            saveTransactions();
+            renderTransactions();
+            updateBalance();
+        });
+
+        li.appendChild(span);
+        li.appendChild(deleteBtn);
+
         list.appendChild(li);
     });
 }
