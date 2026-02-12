@@ -14,38 +14,26 @@ const chartContainer = document.getElementById("chartContainer");
 const ctx = document.getElementById("budgetChart").getContext("2d");
 
 let chart; // wichtig
+
 // =====================
 // 2. EventListener
 // =====================
-document.getElementById("addIncome").addEventListener("click", function () {
-    addTransaction(true);
+document.getElementById("addIncome").addEventListener("click", () => addTransaction(true));
+document.getElementById("addExpense").addEventListener("click", () => addTransaction(false));
+
+amountInput.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") addTransaction(true);
 });
 
-document.getElementById("addExpense").addEventListener("click", function () {
-    addTransaction(false);
-});
-amountInput.addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-        addTransaction(true); // Standard = Einnahme
-    }
-});
 themeToggle.addEventListener("click", function () {
     document.body.classList.toggle("dark");
-
     const isDark = document.body.classList.contains("dark");
-
-    if (isDark) {
-        themeToggle.textContent = "☀ Light Mode";
-        localStorage.setItem("theme", "dark");
-    } else {
-        themeToggle.textContent = "🌙 Dark Mode";
-        localStorage.setItem("theme", "light");
-    }
+    themeToggle.textContent = isDark ? "☀ Light Mode" : "🌙 Dark Mode";
+    localStorage.setItem("theme", isDark ? "dark" : "light");
 });
+
 toggleChartBtn.addEventListener("click", function () {
-
     const isVisible = chartContainer.style.display === "block";
-
     if (isVisible) {
         chartContainer.style.display = "none";
         toggleChartBtn.textContent = "📊 Show Chart";
@@ -54,23 +42,22 @@ toggleChartBtn.addEventListener("click", function () {
         toggleChartBtn.textContent = "❌ Close Chart";
         renderChart();
     }
-
 });
+
 // =====================
 // 3. Funktionen
 // =====================
-
 function addTransaction(isIncome) {
     const text = textInput.value;
     const amount = Number(amountInput.value);
 
-    if (text === "" || amount === 0) {
+    if (!text || amount === 0) {
         alert("Bitte alles ausfüllen");
         return;
     }
 
     const transaction = {
-        text: text,
+        text,
         amount: isIncome ? amount : -amount
     };
 
@@ -78,23 +65,19 @@ function addTransaction(isIncome) {
     saveTransactions();
     renderTransactions();
     updateBalance();
-    if (chartContainer.style.display === "block") {
-    renderChart();
-}
-if (chartContainer.style.display === "block") {
-    renderChart();
-}
+
+    if (chartContainer.style.display === "block") renderChart();
 
     textInput.value = "";
     amountInput.value = "";
 }
+
+// =====================
+// 4. Chart
+// =====================
 function renderChart() {
-
     const totals = calculateTotals();
-
-    if (chart) {
-        chart.destroy();
-    }
+    if (chart) chart.destroy();
 
     chart = new Chart(ctx, {
         type: "doughnut",
@@ -102,31 +85,21 @@ function renderChart() {
             labels: ["Income", "Expenses"],
             datasets: [{
                 data: [totals.income, totals.expenses],
-                backgroundColor: [
-                    "#4CAF50", // Grün Income
-                    "#f44336"  // Rot Expense
-                ],
+                backgroundColor: ["#4CAF50", "#f44336"],
                 borderWidth: 0
             }]
         },
         options: {
             responsive: true,
-            plugins: {
-                legend: {
-                    position: "bottom"
-                }
-            },
-            animation: {
-                animateScale: true,
-                animateRotate: true,
-                duration: 800
-            }
+            plugins: { legend: { position: "bottom" } },
+            animation: { animateScale: true, animateRotate: true, duration: 800 }
         }
     });
 }
-// ===========================
-// 4. Funktionen zum Speichern
-// ===========================
+
+// =====================
+// 5. LocalStorage
+// =====================
 function saveTransactions() {
     localStorage.setItem("transactions", JSON.stringify(transactions));
 }
@@ -135,12 +108,13 @@ function loadTransactions() {
     const saved = localStorage.getItem("transactions");
     if (saved) {
         transactions = JSON.parse(saved);
-        updateBalance();
         renderTransactions();
+        updateBalance();
     }
 }
+
 // =====================
-// 5. Render-Funktionen
+// 6. Render Transactions
 // =====================
 function renderTransactions() {
     list.innerHTML = "";
@@ -148,57 +122,58 @@ function renderTransactions() {
     transactions.forEach((tr, index) => {
         const li = document.createElement("li");
 
-        const span = document.createElement("span");
-        span.textContent = tr.text + " : " + (tr.amount >= 0 ? "+" : "") + tr.amount + " €";
-        span.style.color = tr.amount >= 0 ? "green" : "red";
+        // Card Farbe nach Income/Expense
+        li.style.background = tr.amount >= 0 ? "#e8f5e9" : "#ffebee";
 
-        const deleteBtn = document.createElement("button");
-        deleteBtn.textContent = "❌";
-        deleteBtn.style.marginLeft = "10px";
+        li.innerHTML = `
+            <span>${tr.text}</span>
+            <strong>${tr.amount >= 0 ? "+" : ""}${tr.amount} €</strong>
+            <button>❌</button>
+        `;
 
-        deleteBtn.addEventListener("click", function () {
+        const deleteBtn = li.querySelector("button");
+        deleteBtn.addEventListener("click", () => {
             transactions.splice(index, 1);
             saveTransactions();
             renderTransactions();
             updateBalance();
+            if (chartContainer.style.display === "block") renderChart();
         });
-
-        li.appendChild(span);
-        li.appendChild(deleteBtn);
 
         list.appendChild(li);
     });
 }
+
 // =====================
-// Update Balance
+// 7. Balance Update
 // =====================
 function updateBalance() {
     balance = transactions.reduce((acc, tr) => acc + tr.amount, 0);
     balanceText.textContent = "Kontostand: " + balance + " €";
 }
 
-loadTransactions();
-
+// =====================
+// 8. Theme laden
+// =====================
 const savedTheme = localStorage.getItem("theme");
-
 if (savedTheme === "dark") {
     document.body.classList.add("dark");
     themeToggle.textContent = "☀ Light Mode";
 }
+
+// =====================
+// 9. Calculate Totals
+// =====================
 function calculateTotals() {
-    let income = 0;
-    let expenses = 0;
-
-    transactions.forEach(function(transaction) {
-        if (transaction.amount > 0) {
-            income += transaction.amount;
-        } else {
-            expenses += transaction.amount;
-        }
+    let income = 0, expenses = 0;
+    transactions.forEach(tr => {
+        if (tr.amount > 0) income += tr.amount;
+        else expenses += Math.abs(tr.amount);
     });
-
-    return {
-        income: income,
-        expenses: Math.abs(expenses)
-    };
+    return { income, expenses };
 }
+
+// =====================
+// 10. Start
+// =====================
+loadTransactions();
