@@ -1,34 +1,45 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Budget Tracker</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="app">
+    <!-- Titel -->
     <h2>Budget Tracker 💰</h2>
-    <button id="themeToggle">🌙 Dark Mode</button> 
-    <h3 id="balance">Kontostand: 0 €</h3>
-<button id="toggleChart">📊 Show Chart</button>
 
-<div id="chartContainer" style="display: none; margin-top:20px;">
-    <canvas id="budgetChart"></canvas>
-</div>
+    <!-- Dark Mode Toggle -->
+    <button id="themeToggle">🌙 Dark Mode</button> 
+
+    <!-- Kontostand -->
+    <h3 id="balance">Kontostand: 0 €</h3>
+
+    <!-- Chart Toggle -->
+    <button id="toggleChart">📊 Show Chart</button>
+    <div id="chartContainer" style="display: none; margin-top:20px;">
+        <canvas id="budgetChart"></canvas>
+    </div>
+
+    <!-- Eingaben -->
     <input type="text" id="textInput" placeholder="Beschreibung">
     <input type="number" id="amountInput" placeholder="Betrag">
 
+    <!-- Buttons für Einnahme / Ausgabe -->
     <div class="buttons">
-    <button id="addIncome">+ Einnahme</button>
-    <button id="addExpense">- Ausgabe</button>
-</div>
+        <button id="addIncome">+ Einnahme</button>
+        <button id="addExpense">- Ausgabe</button>
+    </div>
 
+    <!-- Liste der Transaktionen -->
     <ul id="list"></ul>
 </div>
 
-<script src="script.js"></script>
+<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
