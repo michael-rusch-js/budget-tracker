@@ -122,15 +122,16 @@ function renderTransactions() {
     transactions.forEach((tr, index) => {
         const li = document.createElement("li");
 
-        // Card Farbe nach Income/Expense
-        li.style.background = tr.amount >= 0 ? "#e8f5e9" : "#ffebee";
-
+        // Hier kommt die Darstellung der Transaktion
         li.innerHTML = `
-            <span>${tr.text}</span>
-            <strong>${tr.amount >= 0 ? "+" : ""}${tr.amount} €</strong>
-            <button>❌</button>
-        `;
+    <span class="${tr.amount >= 0 ? "income" : "expense"}">
+        ${tr.text}
+    </span>
+    <strong>${tr.amount >= 0 ? "+" : ""}${tr.amount} €</strong>
+    <button>❌</button>
+`;
 
+        // Delete Button EventListener
         const deleteBtn = li.querySelector("button");
         deleteBtn.addEventListener("click", () => {
             transactions.splice(index, 1);
