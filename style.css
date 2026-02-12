@@ -153,6 +153,20 @@ li button {
 li button:hover {
     transform: scale(1.2);
 }
+li span {
+    flex: 1;          /* Nimmt den ganzen Platz links */
+}
+
+li strong {
+    margin-left: 15px; /* Abstand zwischen Beschreibung und Betrag */
+}
+li .income {
+    color: #4CAF50; /* grün */
+}
+
+li .expense {
+    color: #f44336; /* rot */
+}
 
 /* ===================== Chart ===================== */
 #chartContainer canvas {
